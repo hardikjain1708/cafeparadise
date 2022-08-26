@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Reserve</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
+        <style>
+            @keyframes myChange {
+                from {
+                    height: 200px;
+                } to {
+                    height: 0;
+                }
+            }
+
+            body{
+                text-align: center;
+                border:solid 2px rgb(0, 0, 0);
+                margin:10px 350px;
+                padding-bottom:20px ;
+            }
+
+            img {
+                height: 200px;
+            }
+
+            img.ng-hide {
+                animation: 1s myChange;
+            }
+
+            .details {
+                border: 2px solid red; 
+                width: 60%; margin: 0 auto;
+                text-align: left; 
+                padding-left: 20px;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h2>Book My Table</h2>
+        <form ng-app="myApp" ng-controller="validateCtrl" name="myForm" novalidate>
+
+            <div ng-show="myForm.$dirty" class="details">
+                <h3>Booking Details:</h3>
+                <p>Reservation by: {{firstName + ' ' + lastName}}</p>
+                <p>Number of Guests: {{guests}}</p>
+                <p>Email Address: {{email}}</p>
+                <p>Phone Number: {{tel}}</p>
+                <p>Booking Date: {{date | date:"dd/MM/yyyy"}}</p>
+                <p>Booking Time: {{time| date:"h:mma"}}</p>
+            </div>
+
+            <div>
+                <img src="https://www.salondesvins-charnay.fr/img/slider_01.png" ng-hide="myForm.$dirty"><br>
+            </div>
+
+            <p>First Name:<br>
+                <input type="text" name="firstName" ng-model="firstName" required>
+                <div style="color:red" ng-show="myForm.firstName.$dirty && myForm.firstName.$invalid">
+                    <span ng-show="myForm.firstName.$error.required">First Name is required.</span>
+                </div>
+            </p>
+
+            <p>Last Name:<br>
+                <input type="text" name="lastName" ng-model="lastName" required>
+                <div style="color:red" ng-show="myForm.lastName.$dirty && myForm.lastName.$invalid">
+                    <span ng-show="myForm.lastName.$error.required">Last Name is required.</span>
+                </div>
+            </p>
+
+            <p>Email:<br>
+                <input type="email" name="email" ng-model="email" required>
+                <div style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+                    <span ng-show="myForm.email.$error.required">Email is required.</span>
+                    <span ng-show="myForm.email.$error.email">Invalid email address.</span>
+                </div>
+            </p>
+
+            <p>Phone Number<br>
+                <input type="tel" name="tel" ng-model="tel" ng-pattern="/^[7-9][0-9]{9}$/" required>
+                <div style="color:red" ng-show="myForm.tel.$dirty && myForm.tel.$invalid">
+                    <span ng-show="myForm.tel.$error.required">Phone Number is required.</span>
+                    <span ng-show="myForm.tel.$error.pattern">Invalid Phone Number.</span>
+                </div>
+            </p>
+
+
+            <p>Number of Guests:<br>
+                <select ng-model="guests" ng-options="num for num in nums"></select>
+            </p>
+
+            <p>Booking Date:<br>
+                <input type="date" name="date" ng-model="date" required min="2021-04-25"> 
+                <div style="color:red" ng-show="myForm.date.$dirty && myForm.date.$invalid">
+                    <span ng-show="myForm.date.$error.invalid">Date is required.</span>
+                </div>
+            </p>
+
+            <p>Booking Time:<br>
+                <input type="time" name="time" ng-model="time" required> 
+                <div style="color:red" ng-show="myForm.time.$dirty && myForm.time.$invalid">
+                    <span ng-show="myForm.time.$error.required">Time is required.</span>
+                </div>
+            </p>
+
+            <input type="checkbox" ng-model="accepted">
+            <span> I accept the terms and conditions of the hotel.</span><br>
+
+            <input type="submit" value="Book My Table" ng-disabled="myForm.$pristine
+                || !accepted
+                || myForm.firstName.$dirty && myForm.firstName.$invalid 
+                || myForm.lastName.$dirty && myForm.lastName.$invalid 
+                || myForm.email.$dirty && myForm.email.$invalid
+                || myForm.tel.$dirty && myForm.tel.$invalid
+                || myForm.guests.$pristine
+                || myForm.date.$pristine
+                || myForm.time.$pristine
+            " />
+
+        </form>
+        <script src="app.js"></script>
+    </body>
+</html>
